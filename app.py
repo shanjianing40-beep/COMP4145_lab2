@@ -9,18 +9,31 @@ from trading_strategy import (
     implement_strategy,
 )
 
+STOCKS = {
+    "Microsoft (MSFT)": "MSFT",
+    "Apple (AAPL)": "AAPL",
+    "NVIDIA (NVDA)": "NVDA",
+    "Tesla (TSLA)": "TSLA",
+    "Amazon (AMZN)": "AMZN",
+    "Alphabet (GOOGL)": "GOOGL",
+    "Meta (META)": "META",
+}
+
 
 @st.cache_data(ttl=900)
-def load_strategy_results():
-    data = get_stock_data("MSFT")
+def load_strategy_results(ticker):
+    data = get_stock_data(ticker)
+    if data.empty:
+        return data, pd.DataFrame()
+
     data = calculate_moving_averages(data)
     data = identify_golden_cross(data)
     positions = implement_strategy(data)
     return data, positions
 
 
-def show_price_chart(data, positions):
-    st.subheader("MSFT price and moving averages")
+def show_price_chart(ticker, data, positions):
+    st.subheader(f"{ticker} price and moving averages")
     st.caption("Five years of daily closing prices with 50-day and 200-day moving averages.")
 
     figure, axis = plt.subplots(figsize=(13, 6))
@@ -118,11 +131,19 @@ def show_trade_details(positions):
 
 def main():
     st.set_page_config(page_title="Golden Cross Backtest", page_icon="📈", layout="wide")
-    st.title("MSFT Golden Cross Backtest")
+    st.sidebar.header("Stock selection")
+    selected_stock = st.sidebar.selectbox("Choose a stock", options=STOCKS.keys())
+    ticker = STOCKS[selected_stock]
+
+    st.title(f"{ticker} Golden Cross Backtest")
     st.caption("Historical strategy results are for analysis only and are not investment advice.")
 
-    with st.spinner("Loading MSFT historical data and calculating trades..."):
-        data, positions = load_strategy_results()
+    with st.spinner(f"Loading {ticker} historical data and calculating trades..."):
+        data, positions = load_strategy_results(ticker)
+
+    if data.empty:
+        st.error(f"No historical data was returned for ticker '{ticker}'. Check the symbol and try again.")
+        return
 
     page = st.radio(
         "View",
@@ -131,7 +152,7 @@ def main():
     )
 
     if page == "Price chart":
-        show_price_chart(data, positions)
+        show_price_chart(ticker, data, positions)
     elif page == "Trade statistics":
         show_statistics(positions)
     else:
