@@ -17,6 +17,23 @@ STOCKS = {
     "Amazon (AMZN)": "AMZN",
     "Alphabet (GOOGL)": "GOOGL",
     "Meta (META)": "META",
+    "Advanced Micro Devices (AMD)": "AMD",
+    "Adobe (ADBE)": "ADBE",
+    "Berkshire Hathaway (BRK-B)": "BRK-B",
+    "Broadcom (AVGO)": "AVGO",
+    "Cisco (CSCO)": "CSCO",
+    "Coca-Cola (KO)": "KO",
+    "Costco (COST)": "COST",
+    "Eli Lilly (LLY)": "LLY",
+    "JPMorgan Chase (JPM)": "JPM",
+    "Netflix (NFLX)": "NFLX",
+    "Oracle (ORCL)": "ORCL",
+    "Palantir (PLTR)": "PLTR",
+    "Salesforce (CRM)": "CRM",
+    "Shopify (SHOP)": "SHOP",
+    "Taiwan Semiconductor (TSM)": "TSM",
+    "Visa (V)": "V",
+    "Walmart (WMT)": "WMT",
 }
 
 
